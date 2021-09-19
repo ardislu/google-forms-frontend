@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style type="text/css">
+    body {
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", Helvetica, Arial,
+        sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      color: hsl(0deg 0% 15%);
+      background: hsl(0deg 0% 90%);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    label,
+    input,
+    textarea {
+      flex: 100%;
+    }
+
+    input,
+    textarea {
+      margin-block-end: 1rem;
+    }
+
+    button {
+      margin-inline-end: 1rem;
+    }
+  </style>
+  <title>google-forms-frontend</title>
+</head>
+
+<body>
+  <header>
+    <h1>google-forms-frontend</h1>
+    <a href="https://github.com/ardislu/google-forms-frontend">
+      <img src="/github.svg" width="24" height="24" alt="GitHub" />
+    </a>
+  </header>
+
+  <main>
+    <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSclZ7yXg5kNXTlJUKDNGMCGR9vvgKqzyUB-HfLiwc_sveTxEA/formResponse">
+      <label for="entry.185031848">Example short answer:</label>
+      <input type="text" name="entry.185031848">
+
+      <label for="entry.1096192054">Example long answer:</label>
+      <textarea name="entry.1096192054"></textarea>
+
+      <label for="entry.552287623">Multiple choice option:</label>
+      <input list="multiple-choice" name="entry.552287623">
+      <datalist id="multiple-choice">
+        <option value="Multiple choice option 1">
+        <option value="Multiple choice option 2">
+        <option value="Multiple choice option 3">
+        <option value="Multiple choice option 4">
+        <option value="Multiple choice option 5">
+      </datalist>
+
+      <label for="entry.2010116811">Date:</label>
+      <input type="date" name="entry.2010116811">
+
+      <label for="entry.1500214518">Time:</label>
+      <input type="time" name="entry.1500214518">
+
+      <button type="submit">Submit</button>
+      <output></output>
+    </form>
+  </main>
+
+  <script>
+    const form = document.querySelector('form');
+    const button = document.querySelector('button');
+    const output = document.querySelector('output');
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      
+      const short = form['entry.185031848'];
+      const long = form['entry.1096192054'];
+      const multiple = form['entry.552287623'];
+      const date = form['entry.2010116811'];
+      const dateValue = new Date(`${date.value} UTC`); // UTC prevents later functions from shifting values to match local timezone
+      const time = form['entry.1500214518'];
+      const timeValue = new Date(`January 1, 1970 ${form['entry.1500214518'].value} UTC`); // Date value can be any arbitrary date, but it's required. UTC prevents later functions from shifting values to match local timezone
+
+      const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+
+      let body = '';
+      body += `${short.name}=${encodeURIComponent(short.value)}&`;
+      body += `${long.name}=${encodeURIComponent(long.value)}&`;
+      body += `${multiple.name}=${encodeURIComponent(multiple.value)}&`;
+      body += `${date.name}_year=${dateValue.getUTCFullYear()}&`;
+      body += `${date.name}_month=${dateValue.getUTCMonth() + 1}&`; // Google Forms requires 1-12, but getMonth is 0-11
+      body += `${date.name}_day=${dateValue.getUTCDate()}&`;
+      body += `${time.name}_hour=${timeValue.getUTCHours().toString().padStart(2, '0')}&`; // Google Forms requires 2 digits, but getHours does not include leading 0
+      body += `${time.name}_minute=${timeValue.getUTCMinutes().toString().padStart(2, '0')}`; // Google Forms requires 2 digits, but getMinutes does not include leading 0. Last argument must not have trailing &
+
+      await fetch(form.action, { method: 'POST', headers: headers, body: body, mode: 'no-cors' }); // Can't set CORS headers for Google Forms, so can't access the Response. But Request will still be sent.
+      button.disabled = true;
+      output.textContent = '✔ Form submitted!' // Assume the response was successful
+    })
+  </script>
+</body>
+
+</html>
