@@ -92,30 +92,22 @@
 
     form.addEventListener('submit', async event => {
       event.preventDefault();
-      
-      const short = form['entry.185031848'];
-      const long = form['entry.1096192054'];
-      const multiple = form['entry.552287623'];
-      const date = form['entry.2010116811'];
-      const dateValue = new Date(`${date.value} UTC`); // UTC prevents later functions from shifting values to match local timezone
-      const time = form['entry.1500214518'];
-      const timeValue = new Date(`January 1, 1970 ${form['entry.1500214518'].value} UTC`); // Date value can be any arbitrary date, but it's required. UTC prevents later functions from shifting values to match local timezone
 
-      const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
+      const data = new FormData(event.target);
+      const params = new URLSearchParams(data);
 
-      let body = '';
-      body += `${short.name}=${encodeURIComponent(short.value)}&`;
-      body += `${long.name}=${encodeURIComponent(long.value)}&`;
-      body += `${multiple.name}=${encodeURIComponent(multiple.value)}&`;
-      body += `${date.name}_year=${dateValue.getUTCFullYear()}&`;
-      body += `${date.name}_month=${dateValue.getUTCMonth() + 1}&`; // Google Forms requires 1-12, but getMonth is 0-11
-      body += `${date.name}_day=${dateValue.getUTCDate()}&`;
-      body += `${time.name}_hour=${timeValue.getUTCHours().toString().padStart(2, '0')}&`; // Google Forms requires 2 digits, but getHours does not include leading 0
-      body += `${time.name}_minute=${timeValue.getUTCMinutes().toString().padStart(2, '0')}`; // Google Forms requires 2 digits, but getMinutes does not include leading 0. Last argument must not have trailing &
+      // Split date param into _year, _month, and _day as required by Google Forms
+      const dateValue = new Date(`${params.get('entry.2010116811')} UTC`); // UTC prevents later functions from shifting values to match local timezone
+      params.set('entry.2010116811_year', dateValue.getUTCFullYear());
+      params.set('entry.2010116811_month', dateValue.getUTCMonth() + 1); // Google Forms requires 1-12, but getMonth is 0-11
+      params.set('entry.2010116811_day', dateValue.getUTCDate());
 
-      await fetch(form.action, { method: 'POST', headers: headers, body: body, mode: 'no-cors' }); // Can't set CORS headers for Google Forms, so can't access the Response. But Request will still be sent.
+      // Split time param into _hour and _minute as required by Google Forms
+      const timeValue = new Date(`January 1, 1970 ${params.get('entry.1500214518')} UTC`); // Date value can be any arbitrary date, but it's required. UTC prevents later functions from shifting values to match local timezone
+      params.set('entry.1500214518_hour', timeValue.getUTCHours().toString().padStart(2, '0')); // Google Forms requires 2 digits, but getHours does not include leading 0
+      params.set('entry.1500214518_minute', timeValue.getUTCMinutes().toString().padStart(2, '0')); // Google Forms requires 2 digits, but getMinutes does not include leading 0
+
+      await fetch(form.action, { method: 'POST', body: params, mode: 'no-cors' }); // Can't set CORS headers for Google Forms, so can't access the Response. But Request will still be sent.
       button.disabled = true;
       output.textContent = '✔ Form submitted!' // Assume the response was successful
     })
