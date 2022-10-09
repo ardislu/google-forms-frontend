@@ -32,6 +32,31 @@
       margin-inline: auto;
     }
 
+    a {
+      display: inline-block;
+      color: var(--secondary);
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    a::after {
+      content: "";
+      position: relative;
+      display: block;
+      block-size: 2px;
+      background: var(--secondary);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 400ms;
+    }
+
+    a:hover::after,
+    a:focus::after {
+      transform: scaleX(1);
+      transition: transform 150ms;
+    }
+
     form {
       display: flex;
       flex-wrap: wrap;
