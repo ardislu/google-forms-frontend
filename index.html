@@ -60,6 +60,23 @@
       transition: transform 150ms;
     }
 
+    button {
+      background: var(--primary);
+      color: var(--white);
+      font-weight: 700;
+      border: none;
+      padding: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: filter 500ms;
+    }
+
+    button:hover,
+    button:focus {
+      filter: brightness(110%);
+      transition: filter 150ms;
+    }
+
     form {
       display: flex;
       flex-wrap: wrap;
