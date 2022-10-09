@@ -51,6 +51,38 @@
     button {
       margin-inline-end: 1rem;
     }
+
+    .help {
+      background: transparent;
+      border: none;
+      padding: 0;
+      width: 48px;
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      cursor: pointer;
+    }
+
+    .help>svg {
+      transition: transform 500ms, filter 500ms;
+    }
+
+    .help>svg:hover {
+      transform: translateY(-5%);
+      filter: drop-shadow(0 0 16px var(--secondary));
+      transition: transform 150ms, filter 300ms;
+    }
+
+    dialog {
+      background: var(--primary-lightest);
+      border: none;
+      border-block-start: 8px solid var(--secondary);
+      border-radius: 0 0 4px 4px;
+    }
+
+    dialog h1 {
+      margin: 0;
+    }
   </style>
   <title>google-forms-frontend</title>
 </head>
