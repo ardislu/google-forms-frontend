@@ -8,6 +8,9 @@
   <link rel="icon" href="data:,">
   <style>
     :root {
+      --black: hsl(235deg 90% 10%);
+      --white: hsl(235deg 10% 90%);
+      --primary : hsl(235deg 50% 50%);
       --primary-lightest: hsl(235deg 30% 90%);
       --secondary: hsl(354deg 50% 50%);
       --secondary-lighter: hsl(354deg 20% 85%);
@@ -17,7 +20,7 @@
       font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
         "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", Helvetica, Arial,
         sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-      color: hsl(235deg 90% 10%);
+      color: var(--black);
       background: var(--primary-lightest);
     }
 
@@ -84,6 +87,7 @@
 
     .help {
       background: transparent;
+      color: var(--black);
       border: none;
       padding: 0;
       width: 48px;
