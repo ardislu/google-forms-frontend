@@ -64,6 +64,7 @@
       background: var(--primary);
       color: var(--white);
       font-weight: 700;
+      inline-size: fit-content;
       border: none;
       padding: 16px;
       border-radius: 4px;
@@ -79,23 +80,64 @@
 
     form {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
     }
 
-    label,
-    input,
-    textarea {
-      flex: 100%;
+    div {
       margin-block-end: 1rem;
+      position: relative;
+    }
+
+    div::before {
+      content: "";
+      display: block;
+      position: absolute;
+      inset-inline-start: -16px;
+      inline-size: 8px;
+      block-size: 100%;
+      background: var(--secondary);
+      transform: scaleY(0);
+      transition: transform 150ms;
+    }
+
+    div:has(input:focus)::before,
+    div:has(textarea:focus)::before {
+      transform: scaleY(1);
+      transition: transform 400ms;
+    }
+
+    label {
+      font-weight: 700;
+    }
+
+    aside {
+      margin-block-end: 8px;
+    }
+
+    @media (min-width: 1200px) {
+      aside {
+        position: absolute;
+        inset-block-start: 16px;
+        inset-inline-end: -8px;
+        transform: translateX(100%);
+        max-inline-size: 30ch;
+        font-weight: 300;
+      }
+
+      div:has(input:focus) aside,
+      div:has(textarea:focus) aside {
+        font-weight: 500;
+      }
     }
 
     input,
     textarea {
+      box-sizing: border-box;
+      inline-size: 100%;
       font-size: 1rem;
       border: none;
       border-radius: 4px;
       padding: 8px;
-
     }
 
     form button {
@@ -144,27 +186,43 @@
 
   <main>
     <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSclZ7yXg5kNXTlJUKDNGMCGR9vvgKqzyUB-HfLiwc_sveTxEA/formResponse">
-      <label for="entry.185031848">Short answer:</label>
-      <input type="text" name="entry.185031848">
+      <div>
+        <label for="entry.185031848">Short answer</label>
+        <aside>Example description for the short answer.</aside>
+        <input type="text" name="entry.185031848">
+      </div>
 
-      <label for="entry.1096192054">Long answer:</label>
-      <textarea name="entry.1096192054" rows="10"></textarea>
+      <div>
+        <label for="entry.1096192054">Long answer</label>
+        <aside>Example description for the long answer.</aside>
+        <textarea name="entry.1096192054" rows="10"></textarea>
+      </div>
 
-      <label for="entry.552287623">Multiple choice:</label>
-      <input list="multiple-choice" name="entry.552287623">
-      <datalist id="multiple-choice">
-        <option value="Multiple choice option 1">
-        <option value="Multiple choice option 2">
-        <option value="Multiple choice option 3">
-        <option value="Multiple choice option 4">
-        <option value="Multiple choice option 5">
-      </datalist>
+      <div>
+        <label for="entry.552287623">Multiple choice</label>
+        <aside>Example description for the multiple choice.</aside>
+        <input list="multiple-choice" name="entry.552287623">
+        <datalist id="multiple-choice">
+          <option value="Multiple choice option 1">
+          <option value="Multiple choice option 2">
+          <option value="Multiple choice option 3">
+          <option value="Multiple choice option 4">
+          <option value="Multiple choice option 5">
+        </datalist>
 
-      <label for="entry.2010116811">Date:</label>
-      <input type="date" name="entry.2010116811">
+      </div>
 
-      <label for="entry.1500214518">Time:</label>
-      <input type="time" name="entry.1500214518">
+      <div>
+        <label for="entry.2010116811">Date</label>
+        <aside>Example description for the date.</aside>
+        <input type="date" name="entry.2010116811">
+      </div>
+
+      <div>
+        <label for="entry.1500214518">Time</label>
+        <aside>Example description for the time.</aside>
+        <input type="time" name="entry.1500214518">
+      </div>
 
       <button type="submit" name="submit">Submit</button>
       <output name="status"></output>
