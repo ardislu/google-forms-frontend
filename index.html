@@ -50,7 +50,7 @@
       block-size: 2px;
       background: var(--secondary);
       transform: scaleX(0);
-      transform-origin: left;
+      transform-origin: right;
       transition: transform 400ms;
     }
 
@@ -58,6 +58,7 @@
     a:focus::after {
       transform: scaleX(1);
       transition: transform 150ms;
+      transform-origin: left;
     }
 
     button {
