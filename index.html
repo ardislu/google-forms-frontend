@@ -107,8 +107,7 @@
       transition: transform 150ms;
     }
 
-    div:has(input:focus)::before,
-    div:has(textarea:focus)::before {
+    div:focus-within::before {
       transform: scaleY(1);
       transition: transform 400ms;
     }
@@ -131,8 +130,7 @@
         font-weight: 300;
       }
 
-      div:has(input:focus) aside,
-      div:has(textarea:focus) aside {
+      div:focus-within aside {
         font-weight: 500;
       }
     }
