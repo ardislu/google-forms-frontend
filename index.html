@@ -112,6 +112,48 @@
       transition: transform 400ms;
     }
 
+    @keyframes shiftRight {
+      from {
+        background-position: 30%;
+      }
+
+      to {
+        background-position: 50%;
+      }
+    }
+
+    div::after {
+      content: "";
+      display: block;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: -8px;
+      inline-size: calc(100% + 16px);
+      block-size: 100%;
+      border-radius: 0 8px 8px 0;
+      background: linear-gradient(90deg,
+          hsl(354deg 50% 50%) 0%,
+          hsl(347deg 51% 55%) 4%,
+          hsl(341deg 50% 59%) 9%,
+          hsl(333deg 47% 63%) 14%,
+          hsl(323deg 40% 67%) 20%,
+          hsl(308deg 32% 71%) 27%,
+          hsl(288deg 31% 76%) 36%,
+          hsl(269deg 34% 81%) 46%,
+          hsl(252deg 33% 86%) 61%,
+          hsl(236deg 29% 90%) 99%);
+      background-size: 400%;
+      animation: shiftRight 3s linear infinite alternate;
+      filter: opacity(0);
+      transition: filter 300ms;
+    }
+
+    div:focus-within::after {
+      filter: opacity(0.4);
+      transition: filter 150ms;
+    }
+
     label {
       font-weight: 700;
     }
